@@ -1,10 +1,28 @@
 Module MainModule
 
+    ' ==========================================================
+    ' Structures
+    ' ==========================================================
+
+    ''' ----------------------------------------------------------
+    ''' <summary>
+    ''' Datenstruktur zur Speicherung von Benutzerinformationen
+    ''' </summary>
+    ''' <remarks>
+    ''' Enthält eine Benutzer-ID und einen Namen.
+    ''' </remarks>
     Structure Benutzer
         Public UserID As String
         Public Name As String
     End Structure
 
+    ''' ----------------------------------------------------------
+    ''' <summary>
+    ''' Datenstruktur zur Speicherung von Buchinformationen
+    ''' </summary>
+    ''' <remarks>
+    ''' Enthält ISBN, Titel, Autor sowie den Verfügbarkeitsstatus.
+    ''' </remarks>
     Structure Buch
         Public ISBN As String
         Public Title As String
@@ -12,9 +30,26 @@ Module MainModule
         Public Status As String
     End Structure
 
+    ' ==========================================================
+    ' Globale Listen
+    ' ==========================================================
+
     Dim BenutzerListe As New List(Of Benutzer)
     Dim BuchListe As New List(Of Buch)
 
+
+    ' ==========================================================
+    ' MAIN
+    ' ==========================================================
+
+    ''' ----------------------------------------------------------
+    ''' <summary>
+    ''' Einstiegspunkt des Programms. Steuert das Hauptmenü
+    ''' und ruft die entsprechenden Funktionen auf.
+    ''' </summary>
+    ''' <remarks>
+    ''' Lädt zu Beginn alle Testdaten und behandelt Menüeingaben.
+    ''' </remarks>
     Sub Main()
 
         LadeTestdatenBenutzer()
@@ -61,7 +96,7 @@ Module MainModule
                         Console.WriteLine(">> Funktion: Buch zurückgeben (noch nicht implementiert)")
 
                     Case "6"
-                        Console.WriteLine(">> Funktion: Ausgeliehene Bücher eines Benutzers anzeigen (noch nicht implementiert)")
+                        Console.WriteLine(">> Funktion: Ausgeliehene Bücher anzeigen (noch nicht implementiert)")
 
                     Case "0"
                         Console.WriteLine("Programm wird beendet...")
@@ -82,13 +117,22 @@ Module MainModule
 
     End Sub
 
-    ' ============================================
-    ' Gültige Ausgaben
-    ' ============================================
+
+    ' ==========================================================
+    ' BENUTZER AUSGEBEN
+    ' ==========================================================
+
+    ''' ----------------------------------------------------------
+    ''' <summary>
+    ''' Gibt alle im System gespeicherten Benutzer aus.
+    ''' </summary>
+    ''' <remarks>
+    ''' Wenn keine Benutzer vorhanden sind, erfolgt eine Fehlermeldung.
+    ''' </remarks>
     Sub AlleBenutzerAnzeigen()
         Console.WriteLine("=== Alle Benutzer ===")
         If BenutzerListe.Count = 0 Then
-            Console.WriteLine("Keine Benutzer im System gefunden.")
+            Console.WriteLine("Keine Benutzer im System vorhanden.")
         Else
             For Each ben In BenutzerListe
                 Console.WriteLine($"{ben.UserID} - {ben.Name}")
@@ -96,10 +140,22 @@ Module MainModule
         End If
     End Sub
 
+
+    ' ==========================================================
+    ' BÜCHER AUSGEBEN
+    ' ==========================================================
+
+    ''' ----------------------------------------------------------
+    ''' <summary>
+    ''' Gibt alle im System gespeicherten Bücher aus.
+    ''' </summary>
+    ''' <remarks>
+    ''' Bei leerer Buchliste erfolgt eine Hinweismeldung.
+    ''' </remarks>
     Sub AlleBuecherAnzeigen()
         Console.WriteLine("=== Alle Bücher ===")
         If BuchListe.Count = 0 Then
-            Console.WriteLine("Keine Bücher im System gefunden.")
+            Console.WriteLine("Keine Bücher im System vorhanden.")
         Else
             For Each buch In BuchListe
                 Console.WriteLine($"{buch.ISBN} | {buch.Title} | {buch.Author} | Status: {buch.Status}")
@@ -107,9 +163,18 @@ Module MainModule
         End If
     End Sub
 
-    ' ============================================
-    ' Testdaten laden
-    ' ============================================
+
+    ' ==========================================================
+    ' TESTDATEN – BENUTZER
+    ' ==========================================================
+
+    ''' ----------------------------------------------------------
+    ''' <summary>
+    ''' Lädt vorbereitete Testdaten für Benutzer in die Benutzerliste.
+    ''' </summary>
+    ''' <remarks>
+    ''' Datenformat: UserID;Name getrennt durch |
+    ''' </remarks>
     Sub LadeTestdatenBenutzer()
 
         Dim usrTestData As String =
@@ -134,6 +199,18 @@ Module MainModule
         Next
     End Sub
 
+
+    ' ==========================================================
+    ' TESTDATEN – BÜCHER
+    ' ==========================================================
+
+    ''' ----------------------------------------------------------
+    ''' <summary>
+    ''' Lädt vorbereitete Testdaten für Bücher in die Buchliste.
+    ''' </summary>
+    ''' <remarks>
+    ''' Datenformat: ISBN;Titel;Autor;Status getrennt durch |
+    ''' </remarks>
     Sub LadeTestdatenBuecher()
 
         Dim libraryTestData As String =
@@ -162,6 +239,4 @@ Module MainModule
     End Sub
 
 End Module
-
-
 
