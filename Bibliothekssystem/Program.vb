@@ -1,7 +1,14 @@
 Module MainModule
 
+    ' =========================================================================
+    ' Aufgabe c): Speicherung in sinnvollen Datentypen (Structures + List(Of))
+    ' Die Daten werden ausschließlich im RAM gehalten.
+    ' Keine Speicherung über das Ende des Programms hinaus erforderlich.
+    ' =========================================================================
+
+
     ' ============================
-    ' Structures
+    ' Structures für Nutzerdaten und Bücherdaten
     ' ============================
     Structure Benutzer
         Public UserID As String
@@ -15,23 +22,27 @@ Module MainModule
         Public Status As String
     End Structure
 
-    ' ============================
-    ' Listen für Benutzer und Bücher
-    ' ============================
-    Dim BenutzerListe As New List(Of Benutzer)
-    Dim BuchListe As New List(Of Buch)
 
     ' ============================
-    ' MAIN
+    ' Speicher während der Programmausführung (RAM)
+    ' ============================
+    Dim BenutzerListe As New List(Of Benutzer)   ' dynamische Sammlung aller Nutzer
+    Dim BuchListe As New List(Of Buch)           ' dynamische Sammlung aller Bücher
+
+
+    ' ============================
+    ' MAIN PROGRAMM
     ' ============================
     Sub Main()
 
+        ' CSV-Daten in die RAM-Listen laden
         LadeBenutzerCSV()
         LadeBuecherCSV()
 
         Dim running As Boolean = True
 
         While running
+
             Console.Clear()
             Console.WriteLine("===============================================================")
             Console.WriteLine("   Bibliothekssystem DHBW Ravensburg Campus Friedrichshafen    ")
@@ -54,6 +65,7 @@ Module MainModule
                 Console.WriteLine("Leere Eingabe ist ungültig.")
             Else
                 Select Case input
+
                     Case "1"
                         Console.WriteLine(">> Funktion: Neuen Benutzer anlegen (noch nicht implementiert)")
 
@@ -77,7 +89,8 @@ Module MainModule
                         running = False
 
                     Case Else
-                        Console.WriteLine("Ungültige Auswahl. Bitte nur Zahlen von 0 bis 6 eingeben.")
+                        Console.WriteLine("Ungültige Auswahl. Bitte Zahlen von 0 bis 6 eingeben.")
+
                 End Select
             End If
 
@@ -91,25 +104,31 @@ Module MainModule
 
     End Sub
 
+
     ' ============================
-    ' AUSGABE FUNKTIONEN
+    ' AUSGABE ALLER BENUTZER
     ' ============================
     Sub AlleBenutzerAnzeigen()
-        Console.WriteLine("=== Alle Benutzer ===")
+        Console.WriteLine("=== Alle hinterlegten Benutzer ===")
         For Each ben In BenutzerListe
             Console.WriteLine(ben.UserID & " - " & ben.Name)
         Next
     End Sub
 
+
+    ' ============================
+    ' AUSGABE ALLER BÜCHER
+    ' ============================
     Sub AlleBuecherAnzeigen()
-        Console.WriteLine("=== Alle Bücher ===")
+        Console.WriteLine("=== Alle hinterlegten Bücher ===")
         For Each buch In BuchListe
             Console.WriteLine(buch.ISBN & " | " & buch.Title & " | " & buch.Author & " | Status: " & buch.Status)
         Next
     End Sub
 
+
     ' ============================
-    ' CSV DATEN LADEN – Benutzer
+    ' LADEN DER BENUTZERDATEN AUS CSV
     ' ============================
     Sub LadeBenutzerCSV()
 
@@ -131,8 +150,9 @@ Module MainModule
 
     End Sub
 
+
     ' ============================
-    ' CSV DATEN LADEN – Bücher
+    ' LADEN DER BÜCHERDATEN AUS CSV
     ' ============================
     Sub LadeBuecherCSV()
 
@@ -157,18 +177,19 @@ Module MainModule
         BuchListe.Add(New Buch With {.ISBN = "978-1-491-94729-6", .Title = "Programming Basics", .Author = "Rachel Evans", .Status = "available"})
         BuchListe.Add(New Buch With {.ISBN = "978-0-13-708107-3", .Title = "Introduction to Networks", .Author = "Daniel Harris", .Status = "available"})
         BuchListe.Add(New Buch With {.ISBN = "978-0-262-53205-1", .Title = "Artificial Intelligence Basics", .Author = "Helen Brooks", .Status = "available"})
-        BuchListe.Add(New Buch With {.ISBN = "978-1-59327-282-1", .Title = "Problem Solving with Computers", .Author = "Chris Baker", .Status = "available"})
-        BuchListe.Add(New Buch With {.ISBN = "978-0-596-51774-8", .Title = "Linux Fundamentals", .Author = "Paul Walker", .Status = "available"})
-        BuchListe.Add(New Buch With {.ISBN = "978-0-13-187325-4", .Title = "Computer Architecture", .Author = "Andrew Collins", .Status = "available"})
-        BuchListe.Add(New Buch With {.ISBN = "978-1-491-94618-3", .Title = "Programming in Practice", .Author = "Olivia Reed", .Status = "available"})
-        BuchListe.Add(New Buch With {.ISBN = "978-0-321-99278-8", .Title = "Human Computer Interaction", .Author = "Jason Turner", .Status = "available"})
-        BuchListe.Add(New Buch With {.ISBN = "978-0-07-180855-2", .Title = "Information Systems", .Author = "Rebecca Lewis", .Status = "available"})
-        BuchListe.Add(New Buch With {.ISBN = "978-1-59327-599-0", .Title = "Software Development Tools", .Author = "Matthew Perez", .Status = "available"})
-        BuchListe.Add(New Buch With {.ISBN = "978-0-596-52067-0", .Title = "Coding Standards", .Author = "Benjamin Foster", .Status = "available"})
-        BuchListe.Add(New Buch With {.ISBN = "978-0-13-117705-5", .Title = "Fundamentals of Computing", .Author = "Sophia Anderson", .Status = "available"})
+        BuchListe.Add(New Buch With {.ISBN = "978-1-59327-282-1", .Title = "Problem Solving with Computers", .Author = "Chris Baker"})
+        BuchListe.Add(New Buch With {.ISBN = "978-0-596-51774-8", .Title = "Linux Fundamentals", .Author = "Paul Walker"})
+        BuchListe.Add(New Buch With {.ISBN = "978-0-13-187325-4", .Title = "Computer Architecture", .Author = "Andrew Collins"})
+        BuchListe.Add(New Buch With {.ISBN = "978-1-491-94618-3", .Title = "Programming in Practice", .Author = "Olivia Reed"})
+        BuchListe.Add(New Buch With {.ISBN = "978-0-321-99278-8", .Title = "Human Computer Interaction", .Author = "Jason Turner"})
+        BuchListe.Add(New Buch With {.ISBN = "978-0-07-180855-2", .Title = "Information Systems", .Author = "Rebecca Lewis"})
+        BuchListe.Add(New Buch With {.ISBN = "978-1-59327-599-0", .Title = "Software Development Tools", .Author = "Matthew Perez"})
+        BuchListe.Add(New Buch With {.ISBN = "978-0-596-52067-0", .Title = "Coding Standards", .Author = "Benjamin Foster"})
+        BuchListe.Add(New Buch With {.ISBN = "978-0-13-117705-5", .Title = "Fundamentals of Computing", .Author = "Sophia Anderson"})
 
     End Sub
 
 End Module
+
 
 
