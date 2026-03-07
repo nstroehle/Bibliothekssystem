@@ -86,9 +86,9 @@ Module MainModule
     End Sub
 
 
-    ' ============================================
-    ' AUSGABE ALLER BENUTZER
-    ' ============================================
+    ' ============================================================
+    ' Alle Benutzer anzeigen
+    ' ============================================================
     Sub AlleBenutzerAnzeigen()
         Console.WriteLine("=== Alle hinterlegten Benutzer ===")
         For Each ben In BenutzerListe
@@ -97,9 +97,9 @@ Module MainModule
     End Sub
 
 
-    ' ============================================
-    ' AUSGABE ALLER BÜCHER
-    ' ============================================
+    ' ============================================================
+    ' Alle Bücher anzeigen
+    ' ============================================================
     Sub AlleBuecherAnzeigen()
         Console.WriteLine("=== Alle hinterlegten Bücher ===")
         For Each buch In BuchListe
@@ -108,33 +108,36 @@ Module MainModule
     End Sub
 
 
-    ' ============================================
-    ' NEU: Benutzer anlegen (Aufgabe d)
-    ' ============================================
+    ' ============================================================
+    ' Neuer Benutzer: Aufgabe d + Aufgabe e (999-Limit)
+    ' ============================================================
     Sub NeuerBenutzer()
 
         Console.WriteLine("=== Neuen Benutzer anlegen ===")
-        Console.Write("Bitte geben Sie den vollständigen Namen des neuen Benutzers ein: ")
 
+        ' Limit prüfen
+        If BenutzerListe.Count >= 999 Then
+            Console.WriteLine("Es können keine weiteren Benutzer angelegt werden!")
+            Console.WriteLine("Maximal 999 Benutzer sind erlaubt.")
+            Return
+        End If
+
+        Console.Write("Bitte geben Sie den vollständigen Namen des neuen Benutzers ein: ")
         Dim name As String = Console.ReadLine().Trim()
 
-        ' Eingabevalidierung
         If name = "" Then
             Console.WriteLine("Ungültige Eingabe. Der Name darf nicht leer sein.")
             Return
         End If
 
-        ' Neue UserID erzeugen
-        Dim neueIDNumerisch As Integer = BenutzerListe.Count + 1
-        Dim neueID As String = "U" & neueIDNumerisch.ToString("000")
+        ' Nächste freie ID berechnen
+        Dim neueID As String = "U" & (BenutzerListe.Count + 1).ToString("000")
 
-        ' Benutzer erstellen
         Dim neuerBenutzer As New Benutzer With {
             .UserID = neueID,
             .Name = name
         }
 
-        ' In Liste speichern (RAM)
         BenutzerListe.Add(neuerBenutzer)
 
         Console.WriteLine()
@@ -145,9 +148,9 @@ Module MainModule
     End Sub
 
 
-    ' ============================================
-    ' LADEN DER BENUTZERDATEN AUS CSV
-    ' ============================================
+    ' ============================================================
+    ' Benutzer aus CSV laden
+    ' ============================================================
     Sub LadeBenutzerCSV()
 
         BenutzerListe.Add(New Benutzer With {.UserID = "U001", .Name = "Max Johnson"})
@@ -169,9 +172,9 @@ Module MainModule
     End Sub
 
 
-    ' ============================================
-    ' LADEN DER BÜCHERDATEN AUS CSV
-    ' ============================================
+    ' ============================================================
+    ' Bücher aus CSV laden
+    ' ============================================================
     Sub LadeBuecherCSV()
 
         BuchListe.Add(New Buch With {.ISBN = "978-0-13-110362-7", .Title = "Introduction to Programming", .Author = "John Smith", .Status = "available"})
@@ -207,8 +210,8 @@ Module MainModule
 
     End Sub
 
-
 End Module
+
 
 
 
