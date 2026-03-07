@@ -1,8 +1,5 @@
 Module MainModule
 
-    ' ============================
-    ' Structures
-    ' ============================
     Structure Benutzer
         Public UserID As String
         Public Name As String
@@ -15,18 +12,11 @@ Module MainModule
         Public Status As String
     End Structure
 
-    ' ============================
-    ' Listen für Testdaten
-    ' ============================
     Dim BenutzerListe As New List(Of Benutzer)
     Dim BuchListe As New List(Of Buch)
 
-    ' ============================
-    ' MAIN
-    ' ============================
     Sub Main()
 
-        ' Testdaten laden
         LadeTestdatenBenutzer()
         LadeTestdatenBuecher()
 
@@ -48,35 +38,39 @@ Module MainModule
             Console.WriteLine()
             Console.Write("Bitte wählen Sie eine Option: ")
 
-            Dim input As String = Console.ReadLine()
+            Dim input As String = Console.ReadLine().Trim()
             Console.WriteLine()
 
-            Select Case input
-                Case "1"
-                    Console.WriteLine(">> Funktion: Neuen Benutzer anlegen (noch nicht implementiert)")
+            If input = "" Then
+                Console.WriteLine("Leere Eingabe ist ungültig. Bitte erneut versuchen.")
+            Else
+                Select Case input
+                    Case "1"
+                        Console.WriteLine(">> Funktion: Neuen Benutzer anlegen (noch nicht implementiert)")
 
-                Case "2"
-                    AlleBuecherAnzeigen()
+                    Case "2"
+                        AlleBuecherAnzeigen()
 
-                Case "3"
-                    AlleBenutzerAnzeigen()
+                    Case "3"
+                        AlleBenutzerAnzeigen()
 
-                Case "4"
-                    Console.WriteLine(">> Funktion: Buch ausleihen (noch nicht implementiert)")
+                    Case "4"
+                        Console.WriteLine(">> Funktion: Buch ausleihen (noch nicht implementiert)")
 
-                Case "5"
-                    Console.WriteLine(">> Funktion: Buch zurückgeben (noch nicht implementiert)")
+                    Case "5"
+                        Console.WriteLine(">> Funktion: Buch zurückgeben (noch nicht implementiert)")
 
-                Case "6"
-                    Console.WriteLine(">> Funktion: Ausgeliehene Bücher eines Benutzers anzeigen (noch nicht implementiert)")
+                    Case "6"
+                        Console.WriteLine(">> Funktion: Ausgeliehene Bücher eines Benutzers anzeigen (noch nicht implementiert)")
 
-                Case "0"
-                    Console.WriteLine("Programm wird beendet...")
-                    running = False
+                    Case "0"
+                        Console.WriteLine("Programm wird beendet...")
+                        running = False
 
-                Case Else
-                    Console.WriteLine("Ungültige Eingabe. Bitte erneut versuchen.")
-            End Select
+                    Case Else
+                        Console.WriteLine("Ungültige Auswahl. Bitte nur Zahlen von 0 bis 6 eingeben.")
+                End Select
+            End If
 
             If running Then
                 Console.WriteLine()
@@ -88,33 +82,33 @@ Module MainModule
 
     End Sub
 
-
     ' ============================================
-    ' FUNKTION: Benutzer anzeigen
+    ' Gültige Ausgaben
     ' ============================================
     Sub AlleBenutzerAnzeigen()
         Console.WriteLine("=== Alle Benutzer ===")
-
-        For Each ben In BenutzerListe
-            Console.WriteLine($"{ben.UserID} - {ben.Name}")
-        Next
+        If BenutzerListe.Count = 0 Then
+            Console.WriteLine("Keine Benutzer im System gefunden.")
+        Else
+            For Each ben In BenutzerListe
+                Console.WriteLine($"{ben.UserID} - {ben.Name}")
+            Next
+        End If
     End Sub
 
-
-    ' ============================================
-    ' FUNKTION: Bücher anzeigen
-    ' ============================================
     Sub AlleBuecherAnzeigen()
         Console.WriteLine("=== Alle Bücher ===")
-
-        For Each buch In BuchListe
-            Console.WriteLine($"{buch.ISBN} | {buch.Title} | {buch.Author} | Status: {buch.Status}")
-        Next
+        If BuchListe.Count = 0 Then
+            Console.WriteLine("Keine Bücher im System gefunden.")
+        Else
+            For Each buch In BuchListe
+                Console.WriteLine($"{buch.ISBN} | {buch.Title} | {buch.Author} | Status: {buch.Status}")
+            Next
+        End If
     End Sub
 
-
     ' ============================================
-    ' TESTDATEN: Benutzer laden
+    ' Testdaten laden
     ' ============================================
     Sub LadeTestdatenBenutzer()
 
@@ -124,25 +118,22 @@ Module MainModule
             "U003;Hans Meier|" &
             "U004;Laura Schmidt"
 
-        Dim userEntries() As String = usrTestData.Split("|"c)
+        Dim entries() As String = usrTestData.Split("|"c)
 
-        For Each entry In userEntries
-            If entry.Trim() <> "" Then
-                Dim parts() As String = entry.Split(";"c)
-                Dim neu As New Benutzer With {
-                    .UserID = parts(0),
-                    .Name = parts(1)
-                }
-                BenutzerListe.Add(neu)
+        For Each e In entries
+            If e.Trim() <> "" Then
+                Dim parts() As String = e.Split(";"c)
+
+                If parts.Length = 2 Then
+                    BenutzerListe.Add(New Benutzer With {
+                        .UserID = parts(0),
+                        .Name = parts(1)
+                    })
+                End If
             End If
         Next
-
     End Sub
 
-
-    ' ============================================
-    ' TESTDATEN: Bücher laden
-    ' ============================================
     Sub LadeTestdatenBuecher()
 
         Dim libraryTestData As String =
@@ -151,23 +142,26 @@ Module MainModule
             "978-3-540-69006-6;Grundlagen der Softwaretechnik;Meier;ausgeliehen|" &
             "978-3-642-05445-3;Datenstrukturen und Algorithmen;Klein;verfügbar"
 
-        Dim bookEntries() As String = libraryTestData.Split("|"c)
+        Dim entries() As String = libraryTestData.Split("|"c)
 
-        For Each entry In bookEntries
-            If entry.Trim() <> "" Then
-                Dim parts() As String = entry.Split(";"c)
-                Dim neu As New Buch With {
-                    .ISBN = parts(0),
-                    .Title = parts(1),
-                    .Author = parts(2),
-                    .Status = parts(3)
-                }
-                BuchListe.Add(neu)
+        For Each e In entries
+            If e.Trim() <> "" Then
+                Dim parts() As String = e.Split(";"c)
+
+                If parts.Length = 4 Then
+                    BuchListe.Add(New Buch With {
+                        .ISBN = parts(0),
+                        .Title = parts(1),
+                        .Author = parts(2),
+                        .Status = parts(3)
+                    })
+                End If
             End If
         Next
 
     End Sub
 
 End Module
+
 
 
