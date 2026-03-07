@@ -1,15 +1,5 @@
 Module MainModule
 
-    ' =========================================================================
-    ' Aufgabe c): Speicherung in sinnvollen Datentypen (Structures + List(Of))
-    ' Die Daten werden ausschließlich im RAM gehalten.
-    ' Keine Speicherung über das Ende des Programms hinaus erforderlich.
-    ' =========================================================================
-
-
-    ' ============================
-    ' Structures für Nutzerdaten und Bücherdaten
-    ' ============================
     Structure Benutzer
         Public UserID As String
         Public Name As String
@@ -22,20 +12,11 @@ Module MainModule
         Public Status As String
     End Structure
 
+    Dim BenutzerListe As New List(Of Benutzer)
+    Dim BuchListe As New List(Of Buch)
 
-    ' ============================
-    ' Speicher während der Programmausführung (RAM)
-    ' ============================
-    Dim BenutzerListe As New List(Of Benutzer)   ' dynamische Sammlung aller Nutzer
-    Dim BuchListe As New List(Of Buch)           ' dynamische Sammlung aller Bücher
-
-
-    ' ============================
-    ' MAIN PROGRAMM
-    ' ============================
     Sub Main()
 
-        ' CSV-Daten in die RAM-Listen laden
         LadeBenutzerCSV()
         LadeBuecherCSV()
 
@@ -67,7 +48,7 @@ Module MainModule
                 Select Case input
 
                     Case "1"
-                        Console.WriteLine(">> Funktion: Neuen Benutzer anlegen (noch nicht implementiert)")
+                        NeuerBenutzer()
 
                     Case "2"
                         AlleBuecherAnzeigen()
@@ -105,9 +86,9 @@ Module MainModule
     End Sub
 
 
-    ' ============================
+    ' ============================================
     ' AUSGABE ALLER BENUTZER
-    ' ============================
+    ' ============================================
     Sub AlleBenutzerAnzeigen()
         Console.WriteLine("=== Alle hinterlegten Benutzer ===")
         For Each ben In BenutzerListe
@@ -116,9 +97,9 @@ Module MainModule
     End Sub
 
 
-    ' ============================
+    ' ============================================
     ' AUSGABE ALLER BÜCHER
-    ' ============================
+    ' ============================================
     Sub AlleBuecherAnzeigen()
         Console.WriteLine("=== Alle hinterlegten Bücher ===")
         For Each buch In BuchListe
@@ -127,9 +108,46 @@ Module MainModule
     End Sub
 
 
-    ' ============================
+    ' ============================================
+    ' NEU: Benutzer anlegen (Aufgabe d)
+    ' ============================================
+    Sub NeuerBenutzer()
+
+        Console.WriteLine("=== Neuen Benutzer anlegen ===")
+        Console.Write("Bitte geben Sie den vollständigen Namen des neuen Benutzers ein: ")
+
+        Dim name As String = Console.ReadLine().Trim()
+
+        ' Eingabevalidierung
+        If name = "" Then
+            Console.WriteLine("Ungültige Eingabe. Der Name darf nicht leer sein.")
+            Return
+        End If
+
+        ' Neue UserID erzeugen
+        Dim neueIDNumerisch As Integer = BenutzerListe.Count + 1
+        Dim neueID As String = "U" & neueIDNumerisch.ToString("000")
+
+        ' Benutzer erstellen
+        Dim neuerBenutzer As New Benutzer With {
+            .UserID = neueID,
+            .Name = name
+        }
+
+        ' In Liste speichern (RAM)
+        BenutzerListe.Add(neuerBenutzer)
+
+        Console.WriteLine()
+        Console.WriteLine("Benutzer erfolgreich angelegt!")
+        Console.WriteLine("Neue UserID: " & neueID)
+        Console.WriteLine("Name: " & name)
+
+    End Sub
+
+
+    ' ============================================
     ' LADEN DER BENUTZERDATEN AUS CSV
-    ' ============================
+    ' ============================================
     Sub LadeBenutzerCSV()
 
         BenutzerListe.Add(New Benutzer With {.UserID = "U001", .Name = "Max Johnson"})
@@ -151,9 +169,9 @@ Module MainModule
     End Sub
 
 
-    ' ============================
+    ' ============================================
     ' LADEN DER BÜCHERDATEN AUS CSV
-    ' ============================
+    ' ============================================
     Sub LadeBuecherCSV()
 
         BuchListe.Add(New Buch With {.ISBN = "978-0-13-110362-7", .Title = "Introduction to Programming", .Author = "John Smith", .Status = "available"})
@@ -188,6 +206,7 @@ Module MainModule
         BuchListe.Add(New Buch With {.ISBN = "978-0-13-117705-5", .Title = "Fundamentals of Computing", .Author = "Sophia Anderson"})
 
     End Sub
+
 
 End Module
 
