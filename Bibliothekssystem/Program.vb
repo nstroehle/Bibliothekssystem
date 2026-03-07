@@ -85,7 +85,6 @@ Module MainModule
 
     End Sub
 
-
     ' ============================================================
     ' Alle Benutzer anzeigen
     ' ============================================================
@@ -96,41 +95,49 @@ Module MainModule
         Next
     End Sub
 
-
     ' ============================================================
-    ' Alle Bücher anzeigen
+    ' Buchausgabe
     ' ============================================================
     Sub AlleBuecherAnzeigen()
+
         Console.WriteLine("=== Alle hinterlegten Bücher ===")
+        Console.WriteLine()
+
         For Each buch In BuchListe
-            Console.WriteLine(buch.ISBN & " | " & buch.Title & " | " & buch.Author & " | Status: " & buch.Status)
+
+            Dim statusDeutsch As String =
+                If(buch.Status.ToLower() = "available", "verfügbar", "ausgeliehen")
+
+            Console.WriteLine("ISBN:   " & buch.ISBN)
+            Console.WriteLine("Titel:  " & buch.Title)
+            Console.WriteLine("Autor:  " & buch.Author)
+            Console.WriteLine("Status: " & statusDeutsch)
+            Console.WriteLine("----------------------------------------------")
+
         Next
+
     End Sub
 
-
     ' ============================================================
-    ' Neuer Benutzer: Aufgabe d + Aufgabe e (999-Limit)
+    ' Neuer Benutzer
     ' ============================================================
     Sub NeuerBenutzer()
 
         Console.WriteLine("=== Neuen Benutzer anlegen ===")
 
-        ' Limit prüfen
         If BenutzerListe.Count >= 999 Then
-            Console.WriteLine("Es können keine weiteren Benutzer angelegt werden!")
-            Console.WriteLine("Maximal 999 Benutzer sind erlaubt.")
+            Console.WriteLine("Maximale Anzahl von 999 Benutzern erreicht.")
             Return
         End If
 
-        Console.Write("Bitte geben Sie den vollständigen Namen des neuen Benutzers ein: ")
+        Console.Write("Bitte geben Sie den vollständigen Namen ein: ")
         Dim name As String = Console.ReadLine().Trim()
 
         If name = "" Then
-            Console.WriteLine("Ungültige Eingabe. Der Name darf nicht leer sein.")
+            Console.WriteLine("Ungültige Eingabe. Name darf nicht leer sein.")
             Return
         End If
 
-        ' Nächste freie ID berechnen
         Dim neueID As String = "U" & (BenutzerListe.Count + 1).ToString("000")
 
         Dim neuerBenutzer As New Benutzer With {
@@ -141,15 +148,14 @@ Module MainModule
         BenutzerListe.Add(neuerBenutzer)
 
         Console.WriteLine()
-        Console.WriteLine("Benutzer erfolgreich angelegt!")
+        Console.WriteLine("Benutzer wurde erfolgreich angelegt!")
         Console.WriteLine("Neue UserID: " & neueID)
-        Console.WriteLine("Name: " & name)
+        Console.WriteLine("Name:       " & name)
 
     End Sub
 
-
     ' ============================================================
-    ' Benutzer aus CSV laden
+    ' Benutzer 
     ' ============================================================
     Sub LadeBenutzerCSV()
 
@@ -171,9 +177,8 @@ Module MainModule
 
     End Sub
 
-
     ' ============================================================
-    ' Bücher aus CSV laden
+    ' Bücher 
     ' ============================================================
     Sub LadeBuecherCSV()
 
