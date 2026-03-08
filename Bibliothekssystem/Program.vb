@@ -92,13 +92,13 @@ Module MainModule
                         AlleBenutzerAnzeigen()
 
                     Case "4"
-                        Console.WriteLine(">> Funktion: Buch ausleihen (noch nicht implementiert)")
+                        BuchAusleihen()
 
                     Case "5"
                         BuchZurueckgeben()
 
                     Case "6"
-                        Console.WriteLine(">> Funktion: Ausgeliehene Bücher anzeigen (noch nicht implementiert)")
+                        AusgelieheneBuecherAnzeigen()
 
                     Case "0"
                         Console.WriteLine("Programm wird beendet...")
@@ -355,18 +355,131 @@ Module MainModule
         BuchListe.Add(New Buch With {.ISBN = "978-1-491-94729-6", .Title = "Programming Basics", .Author = "Rachel Evans", .Status = "available"})
         BuchListe.Add(New Buch With {.ISBN = "978-0-13-708107-3", .Title = "Introduction to Networks", .Author = "Daniel Harris", .Status = "available"})
         BuchListe.Add(New Buch With {.ISBN = "978-0-262-53205-1", .Title = "Artificial Intelligence Basics", .Author = "Helen Brooks", .Status = "available"})
-        BuchListe.Add(New Buch With {.ISBN = "978-1-59327-282-1", .Title = "Problem Solving with Computers", .Author = "Chris Baker"})
-        BuchListe.Add(New Buch With {.ISBN = "978-0-596-51774-8", .Title = "Linux Fundamentals", .Author = "Paul Walker"})
-        BuchListe.Add(New Buch With {.ISBN = "978-0-13-187325-4", .Title = "Computer Architecture", .Author = "Andrew Collins"})
-        BuchListe.Add(New Buch With {.ISBN = "978-1-491-94618-3", .Title = "Programming in Practice", .Author = "Olivia Reed"})
-        BuchListe.Add(New Buch With {.ISBN = "978-0-321-99278-8", .Title = "Human Computer Interaction", .Author = "Jason Turner"})
-        BuchListe.Add(New Buch With {.ISBN = "978-0-07-180855-2", .Title = "Information Systems", .Author = "Rebecca Lewis"})
-        BuchListe.Add(New Buch With {.ISBN = "978-1-59327-599-0", .Title = "Software Development Tools", .Author = "Matthew Perez"})
-        BuchListe.Add(New Buch With {.ISBN = "978-0-596-52067-0", .Title = "Coding Standards", .Author = "Benjamin Foster"})
-        BuchListe.Add(New Buch With {.ISBN = "978-0-13-117705-5", .Title = "Fundamentals of Computing", .Author = "Sophia Anderson"})
+        BuchListe.Add(New Buch With {.ISBN = "978-1-59327-282-1", .Title = "Problem Solving with Computers", .Author = "Chris Baker", .Status = "available"})
+        BuchListe.Add(New Buch With {.ISBN = "978-0-596-51774-8", .Title = "Linux Fundamentals", .Author = "Paul Walker", .Status = "available"})
+        BuchListe.Add(New Buch With {.ISBN = "978-0-13-187325-4", .Title = "Computer Architecture", .Author = "Andrew Collins", .Status = "available"})
+        BuchListe.Add(New Buch With {.ISBN = "978-1-491-94618-3", .Title = "Programming in Practice", .Author = "Olivia Reed", .Status = "available"})
+        BuchListe.Add(New Buch With {.ISBN = "978-0-321-99278-8", .Title = "Human Computer Interaction", .Author = "Jason Turner", .Status = "available"})
+        BuchListe.Add(New Buch With {.ISBN = "978-0-07-180855-2", .Title = "Information Systems", .Author = "Rebecca Lewis", .Status = "available"})
+        BuchListe.Add(New Buch With {.ISBN = "978-1-59327-599-0", .Title = "Software Development Tools", .Author = "Matthew Perez", .Status = "available"})
+        BuchListe.Add(New Buch With {.ISBN = "978-0-596-52067-0", .Title = "Coding Standards", .Author = "Benjamin Foster", .Status = "available"})
+        BuchListe.Add(New Buch With {.ISBN = "978-0-13-117705-5", .Title = "Fundamentals of Computing", .Author = "Sophia Anderson", .Status = "available"})
     End Sub
+    ''' ----------------------------------------------------------
+    ''' <summary>
+    ''' Ermöglicht das Ausleihen eines Buches
+    ''' </summary>
+    ''' <remarks>
+    ''' Der Benutzer gibt seine Benutzer-ID sowie die ISBN
+    ''' des gewünschten Buches ein. Das System prüft, ob
+    ''' der Benutzer existiert und ob das Buch verfügbar ist.
+    ''' Anschließend wird der Status des Buches auf
+    ''' ausgeliehen gesetzt und die Benutzer-ID gespeichert.
+    ''' </remarks>
+    Sub BuchAusleihen()
 
+        Console.WriteLine("=== Buch ausleihen ===")
+
+        Console.Write("Benutzer-ID eingeben: ")
+        Dim userID As String = Console.ReadLine().Trim()
+
+        Dim benutzerExistiert As Boolean = False
+
+        For Each ben In BenutzerListe
+            If ben.UserID = userID Then
+                benutzerExistiert = True
+            End If
+        Next
+
+        If Not benutzerExistiert Then
+            Console.WriteLine("Fehler: Benutzer existiert nicht.")
+            Return
+        End If
+
+        Console.Write("ISBN des Buches eingeben: ")
+        Dim isbn As String = Console.ReadLine().Trim()
+
+        For i As Integer = 0 To BuchListe.Count - 1
+
+            If BuchListe(i).ISBN = isbn Then
+
+                If BuchListe(i).Status <> "available" Then
+                    Console.WriteLine("Dieses Buch ist bereits ausgeliehen.")
+                    Return
+                End If
+
+                Dim buchTemp = BuchListe(i)
+
+                buchTemp.Status = "lent"
+                buchTemp.EntliehenVon = userID
+
+                BuchListe(i) = buchTemp
+
+                Console.WriteLine()
+                Console.WriteLine("Buch erfolgreich ausgeliehen!")
+                Console.WriteLine("Titel: " & buchTemp.Title)
+
+                Return
+
+            End If
+
+        Next
+
+        Console.WriteLine("Fehler: Buch mit dieser ISBN wurde nicht gefunden.")
+
+    End Sub
+    ''' ----------------------------------------------------------
+    ''' <summary>
+    ''' Zeigt alle ausgeliehenen Bücher eines Benutzers an
+    ''' </summary>
+    ''' <remarks>
+    ''' Der Benutzer gibt seine Benutzer-ID ein. Das System
+    ''' durchsucht die Buchliste und gibt alle Bücher aus,
+    ''' die aktuell von diesem Benutzer ausgeliehen wurden.
+    ''' </remarks>
+    Sub AusgelieheneBuecherAnzeigen()
+
+        Console.WriteLine("=== Ausgeliehene Bücher anzeigen ===")
+
+        Console.Write("Benutzer-ID eingeben: ")
+        Dim userID As String = Console.ReadLine().Trim()
+
+        Dim benutzerExistiert As Boolean = False
+
+        For Each ben In BenutzerListe
+            If ben.UserID = userID Then
+                benutzerExistiert = True
+            End If
+        Next
+
+        If Not benutzerExistiert Then
+            Console.WriteLine("Fehler: Benutzer existiert nicht.")
+            Return
+        End If
+
+        Console.WriteLine()
+        Console.WriteLine("Ausgeliehene Bücher von Benutzer " & userID & ":")
+
+        Dim gefunden As Boolean = False
+
+        For Each buch In BuchListe
+
+            If buch.EntliehenVon = userID Then
+
+                Console.WriteLine("ISBN:  " & buch.ISBN)
+                Console.WriteLine("Titel: " & buch.Title)
+                Console.WriteLine("Autor: " & buch.Author)
+                Console.WriteLine("----------------------------------------------")
+
+                gefunden = True
+
+            End If
+
+        Next
+
+        If Not gefunden Then
+            Console.WriteLine("Dieser Benutzer hat aktuell keine Bücher ausgeliehen.")
+        End If
+
+    End Sub
 End Module
-
-
-
