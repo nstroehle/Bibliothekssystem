@@ -1,29 +1,21 @@
 Module MainModule
-
     Structure Benutzer
         Public UserID As String
         Public Name As String
     End Structure
-
     Structure Buch
         Public ISBN As String
         Public Title As String
         Public Author As String
         Public Status As String
     End Structure
-
     Dim BenutzerListe As New List(Of Benutzer)
     Dim BuchListe As New List(Of Buch)
-
     Sub Main()
-
         LadeBenutzerCSV()
         LadeBuecherCSV()
-
         Dim running As Boolean = True
-
         While running
-
             Console.Clear()
             Console.WriteLine("===============================================================")
             Console.WriteLine("   Bibliothekssystem DHBW Ravensburg Campus Friedrichshafen    ")
@@ -38,127 +30,96 @@ Module MainModule
             Console.WriteLine("0) Programm beenden")
             Console.WriteLine()
             Console.Write("Bitte wählen Sie eine Option: ")
-
             Dim input As String = Console.ReadLine().Trim()
             Console.WriteLine()
-
             If input = "" Then
                 Console.WriteLine("Leere Eingabe ist ungültig.")
             Else
                 Select Case input
-
                     Case "1"
                         NeuerBenutzer()
-
                     Case "2"
                         AlleBuecherAnzeigen()
-
                     Case "3"
                         AlleBenutzerAnzeigen()
-
                     Case "4"
                         Console.WriteLine(">> Funktion: Buch ausleihen (noch nicht implementiert)")
-
                     Case "5"
                         Console.WriteLine(">> Funktion: Buch zurückgeben (noch nicht implementiert)")
-
                     Case "6"
                         Console.WriteLine(">> Funktion: Ausgeliehene Bücher anzeigen (noch nicht implementiert)")
-
                     Case "0"
                         Console.WriteLine("Programm wird beendet...")
                         running = False
-
                     Case Else
                         Console.WriteLine("Ungültige Auswahl. Bitte Zahlen von 0 bis 6 eingeben.")
-
                 End Select
             End If
-
             If running Then
                 Console.WriteLine()
                 Console.WriteLine("Drücken Sie eine Taste, um zum Menü zurückzukehren...")
                 Console.ReadKey()
             End If
-
         End While
-
     End Sub
-
     ' ============================================================
-    ' Alle Benutzer anzeigen
+    ' Nutzer-Ausgabe
     ' ============================================================
     Sub AlleBenutzerAnzeigen()
         Console.WriteLine("=== Alle hinterlegten Benutzer ===")
+        Console.WriteLine()
         For Each ben In BenutzerListe
-            Console.WriteLine(ben.UserID & " - " & ben.Name)
+            Console.WriteLine("Benutzer-ID: " & ben.UserID)
+            Console.WriteLine("Name:        " & ben.Name)
+            Console.WriteLine("----------------------------------------------")
         Next
     End Sub
-
     ' ============================================================
     ' Buchausgabe
     ' ============================================================
     Sub AlleBuecherAnzeigen()
-
         Console.WriteLine("=== Alle hinterlegten Bücher ===")
         Console.WriteLine()
-
         For Each buch In BuchListe
-
             Dim statusDeutsch As String =
                 If(buch.Status.ToLower() = "available", "verfügbar", "ausgeliehen")
-
             Console.WriteLine("ISBN:   " & buch.ISBN)
             Console.WriteLine("Titel:  " & buch.Title)
             Console.WriteLine("Autor:  " & buch.Author)
             Console.WriteLine("Status: " & statusDeutsch)
             Console.WriteLine("----------------------------------------------")
-
         Next
-
     End Sub
-
     ' ============================================================
     ' Neuer Benutzer
     ' ============================================================
     Sub NeuerBenutzer()
-
         Console.WriteLine("=== Neuen Benutzer anlegen ===")
-
         If BenutzerListe.Count >= 999 Then
             Console.WriteLine("Maximale Anzahl von 999 Benutzern erreicht.")
             Return
         End If
-
         Console.Write("Bitte geben Sie den vollständigen Namen ein: ")
         Dim name As String = Console.ReadLine().Trim()
-
         If name = "" Then
             Console.WriteLine("Ungültige Eingabe. Name darf nicht leer sein.")
             Return
         End If
-
         Dim neueID As String = "U" & (BenutzerListe.Count + 1).ToString("000")
-
         Dim neuerBenutzer As New Benutzer With {
             .UserID = neueID,
             .Name = name
         }
-
         BenutzerListe.Add(neuerBenutzer)
-
         Console.WriteLine()
         Console.WriteLine("Benutzer wurde erfolgreich angelegt!")
         Console.WriteLine("Neue UserID: " & neueID)
         Console.WriteLine("Name:       " & name)
-
     End Sub
-
     ' ============================================================
-    ' Benutzer 
+    ' Benutzer anzeigen
     ' ============================================================
     Sub LadeBenutzerCSV()
-
         BenutzerListe.Add(New Benutzer With {.UserID = "U001", .Name = "Max Johnson"})
         BenutzerListe.Add(New Benutzer With {.UserID = "U002", .Name = "Emily Smith"})
         BenutzerListe.Add(New Benutzer With {.UserID = "U003", .Name = "Daniel Brown"})
@@ -174,14 +135,11 @@ Module MainModule
         BenutzerListe.Add(New Benutzer With {.UserID = "U013", .Name = "Kevin White"})
         BenutzerListe.Add(New Benutzer With {.UserID = "U014", .Name = "Rachel Harris"})
         BenutzerListe.Add(New Benutzer With {.UserID = "U015", .Name = "Steven Lewis"})
-
     End Sub
-
     ' ============================================================
-    ' Bücher 
+    ' Bücher anzeigen
     ' ============================================================
     Sub LadeBuecherCSV()
-
         BuchListe.Add(New Buch With {.ISBN = "978-0-13-110362-7", .Title = "Introduction to Programming", .Author = "John Smith", .Status = "available"})
         BuchListe.Add(New Buch With {.ISBN = "978-0-201-03801-9", .Title = "Data Structures Basics", .Author = "Alice Brown", .Status = "available"})
         BuchListe.Add(New Buch With {.ISBN = "978-0-262-03384-8", .Title = "Algorithms Explained", .Author = "Thomas White", .Status = "available"})
@@ -212,11 +170,8 @@ Module MainModule
         BuchListe.Add(New Buch With {.ISBN = "978-1-59327-599-0", .Title = "Software Development Tools", .Author = "Matthew Perez"})
         BuchListe.Add(New Buch With {.ISBN = "978-0-596-52067-0", .Title = "Coding Standards", .Author = "Benjamin Foster"})
         BuchListe.Add(New Buch With {.ISBN = "978-0-13-117705-5", .Title = "Fundamentals of Computing", .Author = "Sophia Anderson"})
-
     End Sub
-
 End Module
-
 
 
 
